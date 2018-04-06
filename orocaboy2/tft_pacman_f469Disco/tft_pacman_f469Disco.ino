@@ -82,6 +82,7 @@ void KeyPadLoop(){
        //Serial.println("but_START");
        ClearKeys();  but_START=true; delay(300);
        Serial.print("-A-");
+       
     }
     else if ( RcvData ==  'q' )
     {
@@ -1351,7 +1352,7 @@ public:
         gb.display.setColor(ORANGE);
         gb.display.setCursor(250, 120);
         gb.display.println("Score");
-        gb.display.setCursor(310, 120);
+        gb.display.setCursor(350, 120);
         gb.display.println(_score);
         sprintf(str,"%ld",_score);
         byte i = 7-strlen(str);
@@ -1474,8 +1475,6 @@ public:
     {
       
         int16_t keys=0;
-           DEMO=1;
-           Init();
 
         if (GAMEWIN==1){
            LEVEL++;
@@ -1487,12 +1486,14 @@ public:
 
         // Start GAME
         if (but_START && DEMO==1 && GAMEPAUSED==0) {
+          
            but_START=false;
            DEMO=0;
            Init();
            gb.display.setColor(BLUE);
            gb.display.setCursor(250, 60);
-           gb.display.println("START Pacman");           
+           gb.display.println("START Pacman");
+           
         } else if (but_START && DEMO==0 && GAMEPAUSED==0) { // Or PAUSE GAME
            but_START=false;
            GAMEPAUSED = 1;
@@ -1530,9 +1531,13 @@ public:
         memset(m,0,sizeof(m));
         _dirty = m;
 
-        if (!GAMEPAUSED) MoveAll(); // IF GAME is PAUSED STOP ALL
+        if (!GAMEPAUSED)
+        {
+           gb.display.setCursor(250, 60);
+           gb.display.println("MOVE ALL");          
+           MoveAll(); // IF GAME is PAUSED STOP ALL
+        }
         if ((ACTIVEBONUS==0 && DEMO==1) || GAMEPAUSED == 1 ) for (byte tmpX=11;tmpX<17;tmpX++) Draw(tmpX,20,false); // Draw 'PAUSED' or 'DEMO' text
-
         DrawAll();
 //        gb.update();
     }
@@ -1544,6 +1549,7 @@ void setup() {
   uint32_t t_time;
 ///  pinMode(Start_B,   INPUT); // 
   Serial.begin(115200);
+  ledOff(1);
 
   Serial.printf("OROCABOY2 start");
   gb.begin();
@@ -1559,12 +1565,11 @@ void setup() {
 
 void loop(void) {
   _game.Step();
-//  KeyPadLoop();
+  KeyPadLoop();
 //     gb.update();
 ///  if(digitalRead(Start_B)) but_START = true ;
-  if(cnt == 0) but_START = true ;
-  delay(10);
+///  if(cnt >= 0 && cnt <= 10) but_START = true ;
+  delay(1);
   ledToggle(0);
-  ledOff(1);
-  if (cnt <= 100) cnt++;
+//  if (cnt <= 10000) cnt++;
 }
