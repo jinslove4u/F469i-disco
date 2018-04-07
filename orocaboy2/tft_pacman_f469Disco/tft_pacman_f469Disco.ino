@@ -1331,7 +1331,15 @@ public:
     {
         char str[8];
         _score += delta;
-        if (DEMO==0 && _score> _hiscore) _hiscore=_score;
+        if (DEMO==0 && _score> _hiscore)
+        {
+           _hiscore=_score;
+          gb.display.setColor(BLACK);
+          gb.display.fillRect(320, 100, gb.display.width(), 20);
+        }
+
+
+
 
         if (_score > _lifescore && _score%10000 > 0) {
           _lifescore=(_score/10000 + 1) * 10000;
@@ -1349,11 +1357,17 @@ public:
           }
           _score=_score+100;
         }
+        gb.display.setColor(BLACK);
+        gb.display.fillRect(320, 120, gb.display.width(), 20);
         gb.display.setColor(ORANGE);
         gb.display.setCursor(250, 120);
         gb.display.println("Score");
-        gb.display.setCursor(350, 120);
+        gb.display.setCursor(320, 120);
         gb.display.println(_score);
+        gb.display.setCursor(250, 80);
+        gb.display.println("Hi Score");
+        gb.display.setCursor(320, 100);
+        gb.display.println(_hiscore);
         sprintf(str,"%ld",_score);
         byte i = 7-strlen(str);
         byte j = 0;
@@ -1476,6 +1490,11 @@ public:
       
         int16_t keys=0;
 
+           gb.display.setColor(BLACK);
+           gb.display.fillRect(350, 40, gb.display.width(), 20);
+           gb.display.setCursor(350, 40);
+           gb.display.println(LIFES);
+
         if (GAMEWIN==1){
            LEVEL++;
            Init();
@@ -1490,6 +1509,8 @@ public:
            but_START=false;
            DEMO=0;
            Init();
+           gb.display.setColor(BLACK);
+           gb.display.fillRect(250, 60, gb.display.width(), 20);
            gb.display.setColor(BLUE);
            gb.display.setCursor(250, 60);
            gb.display.println("START Pacman");
@@ -1533,6 +1554,8 @@ public:
 
         if (!GAMEPAUSED)
         {
+           gb.display.setColor(BLACK);
+           gb.display.fillRect(250, 60, gb.display.width(), 20);
            gb.display.setCursor(250, 60);
            gb.display.println("MOVE ALL");          
            MoveAll(); // IF GAME is PAUSED STOP ALL
@@ -1554,12 +1577,15 @@ void setup() {
   Serial.printf("OROCABOY2 start");
   gb.begin();
   gb.display.clear();
-      gb.display.setCursor(250, 0);
-      gb.display.setColor(YELLOW);
-      gb.display.println("OROCABOY2");
-      gb.display.setColor(ORANGE);
-      gb.display.setCursor(250, 20);
-      gb.display.println("PACMAN");
+  gb.display.setCursor(250, 0);
+  gb.display.setColor(YELLOW);
+  gb.display.println("OROCABOY2");
+  gb.display.setColor(ORANGE);
+  gb.display.setCursor(250, 20);
+  gb.display.println("PACMAN");
+  gb.display.setColor(BLUE);
+  gb.display.setCursor(250, 40);
+  gb.display.println("LIFE");
 }
 
 
